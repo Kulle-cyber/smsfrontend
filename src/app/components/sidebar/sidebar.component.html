@@ -1,0 +1,61 @@
+<mat-sidenav-container class="colorful-admin-container">
+  <mat-sidenav #drawer mode="side" opened class="colorful-sidenav">
+    <div class="admin-header">
+      <h1>Admin Panel</h1>
+    </div>
+
+    <mat-nav-list>
+      <div class="menu-section">
+        <h3 class="section-title">Customer Management</h3>
+        <a mat-list-item routerLink="/seller" routerLinkActive="active-link" class="menu-seller">
+          <mat-icon>storefront</mat-icon>
+          <span>Seller</span>
+        </a>
+        <a mat-list-item routerLink="/products" routerLinkActive="active-link" class="menu-products">
+          <mat-icon>inventory_2</mat-icon>
+          <span>Products</span>
+        </a>
+        <a mat-list-item routerLink="/orders" routerLinkActive="active-link" class="menu-orders">
+          <mat-icon>shopping_bag</mat-icon>
+          <span>Orders</span>
+        </a>
+        <a mat-list-item routerLink="/invoices" routerLinkActive="active-link" class="menu-invoices">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Invoices</span>
+        </a>
+        <a mat-list-item routerLink="/users" routerLinkActive="active-link" class="menu-users">
+          <mat-icon>people_alt</mat-icon>
+          <span>Users</span>
+        </a>
+        <a mat-list-item routerLink="/reports" routerLinkActive="active-link" class="menu-reports">
+          <mat-icon>analytics</mat-icon>
+          <span>Reports</span>
+        </a>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="colorful-toolbar">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">Dashboard Overview</span>
+      <span class="spacer"></span>
+      <button mat-icon-button class="notification-btn">
+        <mat-icon>notifications</mat-icon>
+        <span class="notification-badge">3</span>
+      </button>
+      <button mat-button class="user-btn">
+        <mat-icon>account_circle</mat-icon>
+        <span>Admin</span>
+      </button>
+    </mat-toolbar>
+
+    <div class="colorful-content">
+      <h2>Welcome back, Administrator</h2>
+      <p>Here's your current system overview</p>
+      <!-- Content would go here -->
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

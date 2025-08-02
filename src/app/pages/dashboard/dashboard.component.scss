@@ -1,0 +1,178 @@
+.amazon-admin-container {
+  height: 100vh;
+}
+
+.amazon-admin-sidenav {
+  width: 260px;
+  background: linear-gradient(180deg, #232f3e, #31475e);
+  color: white;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
+
+  .admin-header {
+    padding: 16px;
+    text-align: center;
+    h1 {
+      color: white;
+      font-size: 22px;
+      margin: 0;
+    }
+  }
+
+  .menu-section {
+    padding: 8px;
+
+    .section-title {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #ffffffcc;
+    }
+
+    a.mat-list-item {
+      height: 48px;
+      margin: 4px 0;
+      border-radius: 6px;
+      padding-left: 16px !important;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      display: flex;
+      align-items: center;
+      color: white !important;
+      font-weight: 600;
+
+      ::ng-deep mat-icon {
+        margin-right: 16px;
+        font-size: 22px;
+        color: white !important;
+      }
+
+      &.active-link {
+        background-color: #1a73e8;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+.amazon-toolbar {
+  background-color: #232f3e !important;
+  color: white;
+
+  .menu-button {
+    color: white;
+  }
+
+  .toolbar-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .notification-btn {
+    position: relative;
+    color: white;
+
+    .notification-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      padding: 2px 6px;
+      line-height: 1;
+    }
+  }
+
+  .user-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: white;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+  }
+}
+
+.dashboard-content {
+  padding: 24px;
+
+  h2 {
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 24px;
+    color: #666;
+  }
+
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+
+    .dashboard-card {
+      border-left: 4px solid #3f51b5;
+      padding: 16px;
+
+      mat-card-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        mat-icon {
+          font-size: 28px;
+          color: #3f51b5;
+        }
+
+        mat-card-title {
+          font-weight: bold;
+        }
+      }
+
+      mat-card-content {
+        h3 {
+          margin: 8px 0 4px;
+        }
+
+        p {
+          margin: 0;
+          color: #777;
+        }
+      }
+
+      &.orders-card {
+        border-left-color: #f44336;
+
+        mat-icon {
+          color: #f44336;
+        }
+      }
+
+      &.revenue-card {
+        border-left-color: #4caf50;
+
+        mat-icon {
+          color: #4caf50;
+        }
+      }
+
+      &.reports-card {
+        border-left-color: #ff9800;
+
+        mat-icon {
+          color: #ff9800;
+        }
+      }
+    }
+  }
+}

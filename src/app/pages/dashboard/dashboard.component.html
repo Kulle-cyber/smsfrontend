@@ -1,0 +1,114 @@
+<!-- admin.component.html -->
+<mat-sidenav-container class="amazon-admin-container">
+  <mat-sidenav #drawer mode="side" opened class="amazon-admin-sidenav">
+    <div class="admin-header">
+      <h1>Admin Panel</h1>
+    </div>
+
+    <mat-nav-list>
+      <div class="menu-section">
+        <h3 class="section-title">Ma</h3>
+       <a mat-list-item routerLink="/users" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+  <mat-icon>people_alt</mat-icon>
+  <span class="menu-text">Users</span>
+</a>
+
+        <a mat-list-item routerLink="/customers" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+          <mat-icon>group</mat-icon>
+          <span class="menu-text">Customers</span>
+        </a>
+        <a mat-list-item routerLink="/products" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+          <mat-icon>inventory_2</mat-icon>
+          <span class="menu-text">Products</span>
+        </a>
+        <a mat-list-item routerLink="/orders" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+          <mat-icon>shopping_cart</mat-icon>
+          <span class="menu-text">Orders</span>
+        </a>
+        <a mat-list-item routerLink="/reports" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+          <mat-icon>analytics</mat-icon>
+          <span class="menu-text">Reports</span>
+        </a>
+        <a mat-list-item routerLink="/permissions" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">
+          <mat-icon>verified_user</mat-icon>
+          <span class="menu-text">Permissions</span>
+        </a>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="amazon-toolbar" color="primary">
+      <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">Admin Dashboard</span>
+      <span class="spacer"></span>
+
+      <button mat-icon-button class="notification-btn" matTooltip="Notifications">
+        <mat-icon>notifications</mat-icon>
+        <span class="notification-badge">5</span>
+      </button>
+
+      <button mat-button class="user-btn" matTooltip="Account Settings">
+        <img src="https://i.pravatar.cc/40" alt="avatar" class="avatar" />
+        <span>Admin</span>
+        <mat-icon>expand_more</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="dashboard-content">
+            <router-outlet></router-outlet>
+
+      <h2>Welcome back, Administrator</h2>
+      <p>Here's your current system overview</p>
+
+      <div class="cards-container">
+        <mat-card class="dashboard-card users-card">
+          <mat-card-header>
+            <mat-icon>people_alt</mat-icon>
+            <mat-card-title>Users</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h3>128</h3>
+            <p>Active users</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="dashboard-card orders-card">
+          <mat-card-header>
+            <mat-icon>shopping_cart</mat-icon>
+            <mat-card-title>Orders</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h3>1,024</h3>
+            <p>Completed this month</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="dashboard-card revenue-card">
+          <mat-card-header>
+            <mat-icon>attach_money</mat-icon>
+            <mat-card-title>Revenue</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h3>$45,670</h3>
+            <p>This month</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="dashboard-card reports-card">
+          <mat-card-header>
+            <mat-icon>analytics</mat-icon>
+            <mat-card-title>Reports</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h3>8 new</h3>
+            <p>Reports generated</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

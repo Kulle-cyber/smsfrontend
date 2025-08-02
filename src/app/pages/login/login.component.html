@@ -1,0 +1,29 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <mat-icon class="avatar-icon">person</mat-icon>
+      <h2>Welcome Back</h2>
+      <p>Please sign in to continue</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="login-btn" type="submit" [disabled]="loginForm.invalid">
+        Sign In
+      </button>
+    </form>
+
+    <div class="signup-link">
+      <p>New here? <a routerLink="/signup">Create an account</a></p>
+    </div>
+  </div>
+</div>

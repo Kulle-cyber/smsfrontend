@@ -1,0 +1,28 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <button mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="toolbar-title">Admin Dashboard</span>
+
+  <span class="spacer"></span>
+
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Search users, products..." />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <button mat-icon-button aria-label="Notifications">
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="userMenu">
+    <mat-icon>account_circle</mat-icon>
+    Admin
+  </button>
+
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item>Logout</button>
+  </mat-menu>
+</mat-toolbar>

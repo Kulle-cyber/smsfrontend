@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+$custom-primary: mat.define-palette(mat.$indigo-palette);
+$custom-accent: mat.define-palette(mat.$pink-palette);
+
+$custom-theme: mat.define-light-theme((
+  color: (
+    primary: $custom-primary,
+    accent: $custom-accent,
+  )
+));
+
+@include mat.all-component-themes($custom-theme);
+
+// Add custom overrides below
+
+.mat-list-item {
+  color: white !important;
+  font-weight: 700;
+
+  mat-icon {
+    margin-right: 16px;
+    font-size: 22px;
+    color: white !important;  // force white icon color
+  }
+}
