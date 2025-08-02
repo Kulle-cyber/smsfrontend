@@ -7,6 +7,9 @@ import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MaterialModule } from './material/material.module';
+//import { ReactiveFormsModule, FormsModule } from '@angular/forms';  // <-- import FormsModule here
+import { FormsModule } from '@angular/forms';  // <-- add this import
+//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Toastr module
 import { ToastrModule } from 'ngx-toastr';
@@ -50,6 +53,7 @@ import { UserComponent } from './user/user.component';
     BrowserModule,
     BrowserAnimationsModule,
         MaterialModule,  // <---- add here
+    FormsModule,          // <-- add FormsModule here
 
     ReactiveFormsModule,
     HttpClientModule,
