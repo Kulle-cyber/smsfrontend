@@ -1,0 +1,101 @@
+<div class="manage-customers-container">
+  <div class="title">Customer Management</div>
+
+  <div class="search-add-bar">
+    <input
+      class="search-input"
+      type="text"
+      placeholder="Search by name or email"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+    />
+    <button class="btn btn-primary" (click)="toggleForm()" [attr.aria-label]="showForm ? 'Close form' : 'Add customer'">
+      {{ showForm ? 'Cancel' : '+ Add Customer' }}
+    </button>
+  </div>
+
+  <!-- Customer Form -->
+  <div *ngIf="showForm" class="customer-form-modal">
+    <div class="modal-content">
+      <h3 class="modal-title">{{ editMode ? 'Edit Customer' : 'Add New Customer' }}</h3>
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="seller-form">
+        <div class="form-group">
+          <label>Name</label>
+          <input formControlName="name" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input formControlName="email" placeholder="john@example.com" type="email" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input formControlName="phone" placeholder="(123) 456-7890" />
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input formControlName="address" placeholder="123 Main St" />
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" formControlName="portalAccess" />
+            Portal Access
+          </label>
+        </div>
+        <div class="form-group" *ngIf="!editMode && customerForm.get('portalAccess')?.value">
+          <label>Password</label>
+          <input formControlName="password" placeholder="••••••••" type="password" required />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="toggleForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="customerForm.invalid">
+            {{ editMode ? 'Update' : 'Register' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="analytics-section">
+    <div class="analytics-cards">
+      <div class="card">
+        <h3>Total Customers</h3>
+        <p>{{ totalCustomers }}</p>
+      </div>
+      <div class="card">
+        <h3>With Portal Access</h3>
+        <p>{{ portalCustomerCount }}</p>
+        <div class="top-sales" *ngIf="portalCustomerCount > 0">
+          {{ ((portalCustomerCount / totalCustomers) * 100).toFixed(1) }}% of total
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="customer-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Portal Access</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of filteredCustomers">
+          <td>{{ c.name }}</td>
+          <td>{{ c.email || '-' }}</td>
+          <td>{{ c.phone || '-' }}</td>
+          <td>{{ c.address || '-' }}</td>
+          <td [class.sales]="c.portalAccess">{{ c.portalAccess ? 'Yes' : 'No' }}</td>
+          <td class="actions">
+            <button class="btn btn-secondary" (click)="editCustomer(c)" title="Edit">Edit</button>
+            <button class="btn btn-danger" (click)="onDelete(c.id!)" title="Delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

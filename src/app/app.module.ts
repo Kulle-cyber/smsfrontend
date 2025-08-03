@@ -37,6 +37,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UsersListComponent } from './pages/users-list/users-list.component';
 import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { UserComponent } from './user/user.component';
+import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { UserComponent } from './user/user.component';
     DashboardComponent,
     UsersListComponent,
     UserEditComponent,
-    UserComponent
+    UserComponent,
+    CustomerManagementComponent
   ],
   imports: [
     BrowserModule,

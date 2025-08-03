@@ -1,28 +1,12 @@
-<mat-toolbar color="primary" class="mat-elevation-z6">
-  <button mat-icon-button (click)="toggleSidebar()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span class="toolbar-title">Admin Dashboard</span>
+<nav class="navbar">
+  <div class="logo">🛒 SMS</div>
 
-  <span class="spacer"></span>
+  <input type="text" placeholder="Search for customers, orders..." />
 
-  <mat-form-field appearance="outline" class="search-field">
-    <mat-label>Search</mat-label>
-    <input matInput placeholder="Search users, products..." />
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
-
-  <button mat-icon-button aria-label="Notifications">
-    <mat-icon>notifications</mat-icon>
-  </button>
-
-  <button mat-button [matMenuTriggerFor]="userMenu">
-    <mat-icon>account_circle</mat-icon>
-    Admin
-  </button>
-
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item>Profile</button>
-    <button mat-menu-item>Logout</button>
-  </mat-menu>
-</mat-toolbar>
+  <div class="nav-icons">
+    <button>
+      <span class="material-icons">shopping_cart</span>
+    </button>
+      <span class="material-icons">account_circle</span>
+  </div>
+</nav>

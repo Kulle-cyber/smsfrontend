@@ -1,26 +1,144 @@
-@use '@angular/material' as mat;
+.navbar {
+  background-color: #232f3e; /* Amazon dark blue */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
-$custom-primary: mat.define-palette(mat.$indigo-palette);
-$custom-accent: mat.define-palette(mat.$pink-palette);
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 
-$custom-theme: mat.define-light-theme((
-  color: (
-    primary: $custom-primary,
-    accent: $custom-accent,
-  )
-));
+    img {
+      height: 32px;
+    }
+  }
 
-@include mat.all-component-themes($custom-theme);
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 
-// Add custom overrides below
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
 
-.mat-list-item {
-  color: white !important;
-  font-weight: 700;
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: #febd69;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+    }
+  }
+}
 
-  mat-icon {
-    margin-right: 16px;
-    font-size: 22px;
-    color: white !important;  // force white icon color
+.main-layout {
+  display: flex;
+  min-height: calc(100vh - 60px); /* Subtract navbar height */
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  padding: 1.5rem 0;
+  height: 100%;
+  border-right: 1px solid #e1e1e1;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+
+  .menu-group {
+    margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: #6c757d;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      color: #232f3e;
+      text-decoration: none;
+      transition: all 0.2s;
+      gap: 0.75rem;
+
+      &:hover {
+        background-color: #f5f5f5;
+        color: #d46b08;
+      }
+
+      &.active {
+        background-color: #f0f2f5;
+        border-left: 3px solid #febd69;
+        font-weight: 600;
+      }
+
+      .icon {
+        font-size: 1.25rem;
+        width: 24px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f8f9fa;
+
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.75rem;
+      color: #232f3e;
+      font-weight: 700;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #232f3e;
+      }
+    }
   }
 }

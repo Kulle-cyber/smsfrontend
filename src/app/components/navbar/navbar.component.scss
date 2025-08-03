@@ -1,14 +1,40 @@
-.toolbar-title {
-  font-weight: 600;
-  font-size: 20px;
-  margin-left: 12px;
-}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #232f3e;
+  color: white;
+  padding: 15px 40px; /* Increased vertical and horizontal padding */
 
-.spacer {
-  flex: 1 1 auto;
-}
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 30px; /* Added margin to separate from search */
+  }
 
-.search-field {
-  width: 300px;
-  margin-right: 16px;
+  input {
+    width: 50%;
+    padding: 10px 15px; /* Increased padding for better input field size */
+    border-radius: 4px;
+    border: none;
+    margin: 0 20px; /* Added margin on both sides of the search */
+  }
+
+  .nav-icons {
+    display: flex;
+    gap: 20px; /* Increased gap between icons */
+    margin-left: 20px; /* Added margin to separate from search */
+
+    /* Optional: Style for icons if they're clickable */
+    a, button {
+      color: white;
+      text-decoration: none;
+      padding: 5px;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 }

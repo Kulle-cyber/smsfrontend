@@ -1,188 +1,162 @@
-<div class="user-management-container">
-  <header class="page-header">
-    <h2 class="page-title">Manage Users</h2>
+<div class="manage-users-container">
+  <div class="title">User Management</div>
 
-    <div class="header-controls">
-      <input
-        type="text"
-        placeholder="Search users..."
-        [(ngModel)]="searchTerm"
-        (input)="onSearch()"
-        class="search-input"
-      />
-      <button class="btn-plus" (click)="toggleCreateUserForm()" aria-label="Add User">+</button>
-    </div>
-  </header>
+  <div class="search-add-bar">
+    <input
+      class="search-input"
+      type="text"
+      placeholder="Search users..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+    />
+    <button class="btn btn-primary" (click)="toggleCreateUserForm()" [attr.aria-label]="showCreateForm ? 'Close form' : 'Add user'">
+      {{ showCreateForm ? 'Cancel' : '+ Add User' }}
+    </button>
+  </div>
 
-  <div class="card create-user-card" *ngIf="showCreateForm">
-    <h3 class="card-title">Create New User</h3>
-
-    <form
-      [formGroup]="createUserForm"
-      (ngSubmit)="onCreateUser()"
-      class="user-form"
-      novalidate
-    >
-      <div class="form-group">
-        <label for="username">Username <span class="required">*</span></label>
-        <input
-          id="username"
-          formControlName="username"
-          type="text"
-          class="form-control"
-        />
-        <div
-          *ngIf="
-            createUserForm.get('username')?.invalid &&
-            createUserForm.get('username')?.touched
-          "
-          class="error-message"
-        >
-          Username is required
+  <!-- Create User Form Modal -->
+  <div *ngIf="showCreateForm" class="user-form-modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Create New User</h3>
+      <form [formGroup]="createUserForm" (ngSubmit)="onCreateUser()" class="seller-form" novalidate>
+        <div class="form-group">
+          <label>Username <span class="required">*</span></label>
+          <input formControlName="username" placeholder="johndoe" required />
+          <div *ngIf="createUserForm.get('username')?.invalid && createUserForm.get('username')?.touched" class="error-message">
+            Username is required
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="password">Password <span class="required">*</span></label>
-        <input
-          id="password"
-          formControlName="password"
-          type="password"
-          class="form-control"
-        />
-        <div
-          *ngIf="
-            createUserForm.get('password')?.invalid &&
-            createUserForm.get('password')?.touched
-          "
-          class="error-message"
-        >
-          Password must be at least 6 characters
+        <div class="form-group">
+          <label>Password <span class="required">*</span></label>
+          <input formControlName="password" type="password" placeholder="••••••••" required />
+          <div *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched" class="error-message">
+            Password must be at least 6 characters
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="role">Role <span class="required">*</span></label>
-        <div *ngIf="rolesLoading" class="loading-roles">
-          <i class="spinner"></i> Loading roles...
+        <div class="form-group">
+          <label>Role <span class="required">*</span></label>
+          <div *ngIf="rolesLoading" class="loading-roles">
+            <i class="spinner"></i> Loading roles...
+          </div>
+          <select formControlName="roleId" *ngIf="!rolesLoading && roles.length > 0">
+            <option value="" disabled selected>Select role</option>
+            <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+          </select>
+          <div *ngIf="rolesError" class="error-message">
+            {{ rolesError }}
+            <button type="button" class="retry-btn" (click)="loadRoles()">Retry</button>
+          </div>
+          <div *ngIf="createUserForm.get('roleId')?.invalid && createUserForm.get('roleId')?.touched" class="error-message">
+            Role is required
+          </div>
         </div>
-        <select
-          id="role"
-          formControlName="roleId"
-          class="form-control"
-          *ngIf="!rolesLoading && roles.length > 0"
-        >
-          <option value="" disabled selected>Select role</option>
-          <option *ngFor="let role of roles" [value]="role.id">
-            {{ role.name }}
-          </option>
-        </select>
-        <div *ngIf="rolesError" class="error-message">
-          {{ rolesError }}
-          <button type="button" class="retry-btn" (click)="loadRoles()">
-            Retry
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <input formControlName="fullName" placeholder="John Doe" />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input formControlName="email" type="email" placeholder="john@example.com" />
+          <div *ngIf="createUserForm.get('email')?.invalid && createUserForm.get('email')?.touched" class="error-message">
+            Please enter a valid email
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="toggleCreateUserForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading || createUserForm.invalid">
+            <span *ngIf="!loading">Create User</span>
+            <span *ngIf="loading"><i class="spinner"></i> Creating...</span>
           </button>
         </div>
-        <div
-          *ngIf="
-            createUserForm.get('roleId')?.invalid &&
-            createUserForm.get('roleId')?.touched
-          "
-          class="error-message"
-        >
-          Role is required
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="fullName">Full Name</label>
-        <input
-          id="fullName"
-          formControlName="fullName"
-          type="text"
-          class="form-control"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          formControlName="email"
-          type="email"
-          class="form-control"
-        />
-        <div
-          *ngIf="
-            createUserForm.get('email')?.invalid &&
-            createUserForm.get('email')?.touched
-          "
-          class="error-message"
-        >
-          Please enter a valid email
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        class="btn-primary"
-        [disabled]="loading || createUserForm.invalid"
-      >
-        <span *ngIf="!loading">Create User</span>
-        <span *ngIf="loading"
-          ><i class="spinner"></i> Creating...</span
-        >
-      </button>
-    </form>
-
-    <div class="messages">
-      <div class="alert alert-error" *ngIf="error">{{ error }}</div>
-      <div class="alert alert-success" *ngIf="success">{{ success }}</div>
+      </form>
     </div>
   </div>
 
-  <div class="card users-list-card">
-    <h3 class="card-title">Existing Users</h3>
+  <!-- Edit User Form Modal -->
+  <div *ngIf="editingUser" class="user-form-modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Edit User: {{ editingUser.username }}</h3>
+      <form [formGroup]="editUserForm" (ngSubmit)="onUpdateUser()" class="seller-form" novalidate>
+        <div class="form-group">
+          <label>Username <span class="required">*</span></label>
+          <input formControlName="username" required />
+          <div *ngIf="editUserForm.get('username')?.invalid && editUserForm.get('username')?.touched" class="error-message">
+            Username is required
+          </div>
+        </div>
 
-    <div *ngIf="filteredUsers.length > 0; else noUsers" class="table-responsive">
-      <table class="users-table">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of filteredUsers">
-            <td>{{ user.username }}</td>
-            <td>{{ user.fullName || '-' }}</td>
-            <td>{{ user.email || '-' }}</td>
-            <td>
-              <select
-                #roleSelect
-                [value]="user.role?.id"
-                (change)="onRoleChange(user, roleSelect.value)"
-                class="role-select"
-              >
-                <option *ngFor="let role of roles" [value]="role.id">
-                  {{ role.name }}
-                </option>
-              </select>
-            </td>
-            <td>
-              <button class="btn-update" (click)="onEditUser(user)">Update</button>
-              <button class="btn-delete" (click)="onDeleteUser(user)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <div class="form-group">
+          <label>Email</label>
+          <input formControlName="email" type="email" />
+          <div *ngIf="editUserForm.get('email')?.invalid && editUserForm.get('email')?.touched" class="error-message">
+            Please enter a valid email
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>New Password (Optional)</label>
+          <input formControlName="password" type="password" placeholder="Leave blank to keep current" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading || editUserForm.invalid">
+            <span *ngIf="!loading">Update User</span>
+            <span *ngIf="loading"><i class="spinner"></i> Updating...</span>
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <ng-template #noUsers>
-      <div class="no-users-message">No users found.</div>
-    </ng-template>
+  <div class="analytics-section">
+    <div class="analytics-cards">
+      <div class="card">
+        <h3>Total Users</h3>
+        <p>{{ users.length }}</p>
+      </div>
+      <div class="card" *ngIf="roles.length > 0">
+        <h3>Admin Users</h3>
+        <p>{{ getAdminUserCount() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.username }}</td>
+          <td>{{ user.fullName || '-' }}</td>
+          <td>{{ user.email || '-' }}</td>
+          <td>
+            <select #roleSelect [value]="user.role?.id" (change)="onRoleChange(user, roleSelect.value)">
+              <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+            </select>
+          </td>
+          <td class="actions">
+            <button class="btn btn-secondary" (click)="onEditUser(user)">Edit</button>
+            <button class="btn btn-danger" (click)="onDeleteUser(user)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredUsers.length === 0" class="no-users-message">
+      No users found
+    </div>
   </div>
 </div>
