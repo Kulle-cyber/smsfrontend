@@ -13,16 +13,16 @@ export class CustomerService {
     return this.http.get<Customer[]>(this.baseUrl);
   }
 
-  registerCustomer(customer: Customer): Observable<any> {
-    return this.http.post(this.baseUrl, customer);
+  registerCustomer(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(this.baseUrl, customer);
   }
 
-  updateCustomer(customer: Customer): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${customer.id}`, customer);
+  updateCustomer(customer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(`${this.baseUrl}/${customer.id}`, customer);
   }
 
-  deleteCustomer(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteCustomer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
   login(email: string, password: string): Observable<Customer> {

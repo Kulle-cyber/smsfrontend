@@ -113,8 +113,13 @@ export class CustomerManagementComponent implements OnInit {
         ...formData,
         id: this.editingCustomer.id
       }).subscribe({
-        next: () => {
-          this.loadCustomers();
+        next: (updatedCustomer) => {
+          // Update local state
+          const index = this.customers.findIndex(c => c.id === updatedCustomer.id);
+          if (index !== -1) {
+            this.customers[index] = updatedCustomer;
+          }
+          this.filteredCustomers = [...this.customers];
           this.cancelEdit();
         },
         error: (err) => {
