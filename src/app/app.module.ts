@@ -38,6 +38,8 @@ import { UsersListComponent } from './pages/users-list/users-list.component';
 import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { UserComponent } from './user/user.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
+import { SalespersonComponent } from './components/salesperson/salesperson.component';
+import { AccountantComponent } from './components/accountant/accountant.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { CustomerManagementComponent } from './components/customer-management/cu
     UsersListComponent,
     UserEditComponent,
     UserComponent,
-    CustomerManagementComponent
+    CustomerManagementComponent,
+    SalespersonComponent,
+    AccountantComponent
   ],
   imports: [
     BrowserModule,

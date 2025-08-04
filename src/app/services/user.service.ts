@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import type { User, Role } from '../models/user.model'; // 'type' is okay for interfaces
-import * as bcrypt from 'bcryptjs';
+//import * as bcrypt from 'bcryptjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,7 @@ export class UserService {
   }): Observable<User> {
     const userToCreate: User = {
       username: userData.username,
-      passwordHash: bcrypt.hashSync(userData.password, 10),
+     // passwordHash: bcrypt.hashSync(userData.password, 10),
       roleId: userData.roleId,
       fullName: userData.fullName,
       email: userData.email,

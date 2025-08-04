@@ -1,43 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss'],  // Add this line!
 })
-export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+export class LoginComponent {
+  loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
-
-  ngOnInit() {
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.invalid) return;
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      const { username, password } = this.loginForm.value;
 
-    const { username, password } = this.loginForm.value;
-    this.authService.login(username, password).subscribe({
-      next: () => {
-        this.toastr.success('Login successful!');
-        this.router.navigate(['/dashboard']);
-      },
-      error: () => {
-        this.toastr.error('Invalid username or password');
-      },
-    });
+      this.authService.login(username, password).subscribe({
+        next: (response) => {
+          // Redirect based on role
+          const role = response.role;
+          if (role === 'admin') {
+            this.router.navigate(['/dashboard']);
+          } else if (role === 'salesperson') {
+            this.router.navigate(['/salesperson']);
+          } else if (role === 'accountant') {
+            this.router.navigate(['/accountant']);
+          } else {
+            this.errorMessage = 'Unauthorized role';
+          }
+        },
+        error: () => {
+          this.errorMessage = 'Invalid username or password';
+        },
+      });
+    }
   }
 }
