@@ -1,35 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-
-// Angular animations (required by ngx-toastr and Angular Material)
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MaterialModule } from './material/material.module';
-//import { ReactiveFormsModule, FormsModule } from '@angular/forms';  // <-- import FormsModule here
-import { FormsModule } from '@angular/forms';  // <-- add this import
-//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-// Toastr module
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 
-// Angular Forms
-import { ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
-// HTTP
-import { HttpClientModule } from '@angular/common/http';
-
-// Angular Material modules
+// Material Modules (include all necessary ones)
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';  // ✅ ADDED
-import { MatMenuModule } from '@angular/material/menu';        // ✅ ADDED
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+// Your Components
 import { LoginComponent } from './pages/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -40,6 +30,7 @@ import { UserComponent } from './user/user.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
 import { SalespersonComponent } from './components/salesperson/salesperson.component';
 import { AccountantComponent } from './components/accountant/accountant.component';
+import { ProductsComponent } from './products/products.component'; // Make sure this is added if it exists
 
 @NgModule({
   declarations: [
@@ -53,31 +44,30 @@ import { AccountantComponent } from './components/accountant/accountant.componen
     UserComponent,
     CustomerManagementComponent,
     SalespersonComponent,
-    AccountantComponent
+    AccountantComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-        MaterialModule,  // <---- add here
-    FormsModule,          // <-- add FormsModule here
-
-    ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule, // Needed for formGroup, formControlName
     HttpClientModule,
+    ToastrModule.forRoot(),
+    AppRoutingModule,
+
+    // Angular Material
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-        MatSidenavModule,
+    MatSidenavModule,
     MatCardModule,
-
-      MatListModule,
-
-    MatToolbarModule,   // ✅ Toolbar for navbar
-    MatMenuModule,      // ✅ Menu for user dropdown
-    ToastrModule.forRoot(),
-    AppRoutingModule
+    MatListModule,
+    MatToolbarModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
