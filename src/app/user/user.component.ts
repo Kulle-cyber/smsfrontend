@@ -53,11 +53,11 @@ export class UserComponent implements OnInit {
 
   loadUsers(): void {
     this.userService.getUsers().subscribe({
-      next: (users) => {
+      next: (users: User[]) => {
         this.users = users;
         this.filteredUsers = [...users];
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = `Failed to load users: ${err.message}`;
         console.error(err);
       }
@@ -68,11 +68,11 @@ export class UserComponent implements OnInit {
     this.rolesLoading = true;
     this.rolesError = "";
     this.userService.getRoles().subscribe({
-      next: (roles) => {
+      next: (roles: Role[]) => {
         this.roles = roles;
         this.rolesLoading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.rolesError = `Failed to load roles: ${err.message}`;
         this.rolesLoading = false;
         console.error(err);
@@ -111,7 +111,7 @@ export class UserComponent implements OnInit {
         this.loading = false;
         this.showCreateForm = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error("Create user error:", err);
         if (err.status === 409) {
           this.error = err.error?.error || "Username or email already exists.";
@@ -132,7 +132,7 @@ export class UserComponent implements OnInit {
         this.success = "Role updated successfully!";
         setTimeout(() => this.success = "", 3000);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = `Failed to update role: ${err.error?.error || err.message}`;
         setTimeout(() => this.error = "", 5000);
       }
@@ -196,7 +196,7 @@ export class UserComponent implements OnInit {
         this.loadUsers();
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error("Update user error:", err);
         if (err.status === 409) {
           this.error = err.error?.error || "Username or email already exists.";
@@ -223,7 +223,7 @@ export class UserComponent implements OnInit {
           this.loadUsers();
           setTimeout(() => this.success = "", 3000);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.error = `Failed to delete user: ${err.error?.error || err.message}`;
           setTimeout(() => this.error = "", 5000);
         }

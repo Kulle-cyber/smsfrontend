@@ -1,4 +1,3 @@
-// src/app/models/product.model.ts
 export interface Product {
   id?: number;
   name: string;
@@ -6,5 +5,5 @@ export interface Product {
   price: number;
   stock: number;
   imageUrl: string;
-  salespersonId?: number;
+  salesperson_id: number;   // changed from sellerId to salesperson_id
 }
