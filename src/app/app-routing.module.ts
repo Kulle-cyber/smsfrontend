@@ -6,7 +6,7 @@ import { UserComponent } from './user/user.component';
 import { AccountantComponent } from './components/accountant/accountant.component';
 import { SalespersonComponent } from './components/salesperson/salesperson.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
-import { ProductsComponent } from './products/products.component';
+//import { ProductsComponent } from './products/products.component';
 import { ManageProductComponent } from './components/manage-product/manage-product.component';
 
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: 'users', component: UserComponent },
       { path: 'accountant', component: AccountantComponent },
   { path: 'salesperson', component: SalespersonComponent },
-    { path: 'products', component: ProductsComponent },
+    //{ path: 'products', component: ProductsComponent },
       { path: '', redirectTo: '/products', pathMatch: 'full' },
  { path: 'products/manage', component: ManageProductComponent },
   //{ path: 'products/new', component: CreateProductComponent }, // if you have this

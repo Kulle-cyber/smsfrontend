@@ -42,25 +42,24 @@ export class ManageProductComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.product1Service.getAll().subscribe((data: Product[]) => {
-      this.products = data;
-    });
-  }
+  this.product1Service.getAll(this.loggedInSalespersonId).subscribe((data: Product[]) => {
+    this.products = data;
+  });
+}
 
-  onFileSelected(event: any): void {
-    if (event.target.files && event.target.files.length > 0) {
-      this.imageFile = event.target.files[0];
+  onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.imageFile = input.files[0];
 
-      if (this.imageFile) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.imagePreview = reader.result as string;
-          this.productForm.patchValue({ imageUrl: this.imagePreview });
-        };
-        reader.readAsDataURL(this.imageFile);
-      }
-    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      this.productForm.patchValue({ imageUrl: this.imagePreview });
+    };
+    reader.readAsDataURL(this.imageFile);
   }
+}
 
   onSubmit(): void {
     if (this.productForm.invalid) return;
