@@ -36,7 +36,7 @@ import { UserComponent } from './user/user.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
 import { SalespersonComponent } from './components/salesperson/salesperson.component';
 import { AccountantComponent } from './components/accountant/accountant.component';
-import { ProductsComponent } from './products/products.component';
+//import { ProductsComponent } from './products/products.component';
 import { ManageProductComponent } from './components/manage-product/manage-product.component';
 
 @NgModule({
@@ -52,7 +52,7 @@ import { ManageProductComponent } from './components/manage-product/manage-produ
     CustomerManagementComponent,
     SalespersonComponent,
     AccountantComponent,
-    ProductsComponent,
+    //ProductsComponent,
     ManageProductComponent
   ],
   imports: [

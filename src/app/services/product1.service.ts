@@ -20,11 +20,12 @@ export class Product1Service {
     });
   }
 
-  getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.baseUrl, {
-      headers: this.getAuthHeaders()
-    });
-  }
+  getAll(salespersonId: number): Observable<Product[]> {
+  return this.http.get<Product[]>(`${this.baseUrl}?salespersonId=${salespersonId}`, {
+    headers: this.getAuthHeaders()
+  });
+}
+
 
   getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}/${id}`, {
