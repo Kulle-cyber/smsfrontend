@@ -2,30 +2,29 @@
   <h2>{{ editing ? 'Edit Product' : 'Add Product' }}</h2>
 
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <input formControlName="name" placeholder="Name" required>
-    <input formControlName="description" placeholder="Description">
-    <input type="number" formControlName="price" placeholder="Price" required>
-    <input type="number" formControlName="stock" placeholder="Stock" required>
+    <input formControlName="name" placeholder="Name" required />
+    <input formControlName="description" placeholder="Description" />
+    <input type="number" formControlName="price" placeholder="Price" required />
+    <input type="number" formControlName="stock" placeholder="Stock" required />
 
-    <!-- File input for image -->
+    <!-- Image upload -->
     <input type="file" (change)="onFileSelected($event)" accept="image/*" />
 
     <!-- Image preview -->
     <img *ngIf="imagePreview" [src]="imagePreview" width="150" style="margin-top: 10px;" />
 
-    <!-- Removed sellerId field -->
-
     <button type="submit">{{ editing ? 'Update' : 'Add' }} Product</button>
     <button type="button" (click)="resetForm()" *ngIf="editing">Cancel</button>
   </form>
 
-  <hr>
+  <hr />
 
+  <!-- Product list -->
   <div *ngFor="let product of products" class="product-item">
     <h3>{{ product.name }}</h3>
     <p>{{ product.description }}</p>
     <p>Price: {{ product.price }} | Stock: {{ product.stock }}</p>
-    <img *ngIf="product.imageUrl" [src]="product.imageUrl" width="100" />
+    <img *ngIf="product.image_url" [src]="product.image_url" width="100" />
     <p>Salesperson ID: {{ product.salesperson_id }}</p>
     <button (click)="editProduct(product)">Edit</button>
     <button (click)="deleteProduct(product.id!)">Delete</button>

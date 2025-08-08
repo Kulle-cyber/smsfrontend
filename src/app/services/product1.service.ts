@@ -1,9 +1,8 @@
-// src/app/services/product1.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product1.model'; // Adjust if path differs
-import { AuthService } from './auth.service'; // Adjust path if needed
+import { Product } from '../models/product1.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +20,10 @@ export class Product1Service {
   }
 
   getAll(salespersonId: number): Observable<Product[]> {
-  return this.http.get<Product[]>(`${this.baseUrl}?salespersonId=${salespersonId}`, {
-    headers: this.getAuthHeaders()
-  });
-}
-
+    return this.http.get<Product[]>(`${this.baseUrl}?salesperson_id=${salespersonId}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 
   getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}/${id}`, {

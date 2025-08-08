@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Product } from 'src/app/models/product1.model';
 import { Product1Service } from 'src/app/services/product1.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-product',
@@ -10,20 +10,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ManageProductComponent implements OnInit {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   productForm!: FormGroup;
   editing: boolean = false;
   selectedProductId?: number;
-
   imageFile?: File;
   imagePreview?: string;
+  loggedInSalespersonId: number = 123; // Replace with real logged in user ID
+  showAddForm: boolean = false;
+  searchTerm: string = '';
 
-  // TODO: Replace this mock with real auth user info service
-  loggedInSalespersonId: number = 123;  // Example logged-in salesperson ID
-
-  constructor(
-    private product1Service: Product1Service,
-    private fb: FormBuilder
-  ) {}
+  constructor(private fb: FormBuilder, private product1Service: Product1Service) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -34,43 +31,49 @@ export class ManageProductComponent implements OnInit {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
-      price: [0, Validators.required],
-      stock: [0, Validators.required],
-      imageUrl: ['']
-      // salespersonId removed from form controls
+      price: [0, [Validators.required, Validators.min(0)]],
+      stock: [0, [Validators.required, Validators.min(0)]],
+      image_url: ['']
     });
   }
 
   loadProducts(): void {
-  this.product1Service.getAll(this.loggedInSalespersonId).subscribe((data: Product[]) => {
-    this.products = data;
-  });
-}
+    this.product1Service.getAll(this.loggedInSalespersonId).subscribe(data => {
+      this.products = data;
+      this.filteredProducts = [...this.products];
+    });
+  }
+
+  filterProducts(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredProducts = this.products.filter(p =>
+      p.name.toLowerCase().includes(term) ||
+      (p.description && p.description.toLowerCase().includes(term))
+    );
+  }
 
   onFileSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    this.imageFile = input.files[0];
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.imageFile = input.files[0];
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-      this.productForm.patchValue({ imageUrl: this.imagePreview });
-    };
-    reader.readAsDataURL(this.imageFile);
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+        this.productForm.patchValue({ image_url: this.imagePreview });
+      };
+      reader.readAsDataURL(this.imageFile);
+    }
   }
-}
 
   onSubmit(): void {
     if (this.productForm.invalid) return;
 
-    // Get form values
     const formValue = this.productForm.value;
 
-    // Add logged in salespersonId automatically
     const product: Product = {
       ...formValue,
-      salespersonId: this.loggedInSalespersonId
+      salesperson_id: this.loggedInSalespersonId
     };
 
     if (this.editing && this.selectedProductId != null) {
@@ -90,13 +93,8 @@ export class ManageProductComponent implements OnInit {
     this.editing = true;
     this.selectedProductId = product.id;
     this.productForm.patchValue(product);
-    this.imagePreview = product.imageUrl;
-  }
-
-  deleteProduct(id: number): void {
-    this.product1Service.delete(id).subscribe(() => {
-      this.loadProducts();
-    });
+    this.imagePreview = product.image_url;
+    this.showAddForm = true;
   }
 
   resetForm(): void {
@@ -105,5 +103,6 @@ export class ManageProductComponent implements OnInit {
     this.productForm.reset();
     this.imagePreview = undefined;
     this.imageFile = undefined;
+    this.showAddForm = false;
   }
 }

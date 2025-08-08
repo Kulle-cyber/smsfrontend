@@ -4,6 +4,6 @@ export interface Product {
   description: string;
   price: number;
   stock: number;
-  imageUrl: string;
-  salesperson_id: number;   // changed from sellerId to salesperson_id
+  image_url: string;        // changed from imageUrl
+  salesperson_id: number;   // changed from salespersonId
 }
