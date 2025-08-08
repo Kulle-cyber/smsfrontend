@@ -1,26 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Product } from 'src/app/models/product1.model';
 import { Product1Service } from 'src/app/services/product1.service';
 
 @Component({
   selector: 'app-manage-product',
   templateUrl: './manage-product.component.html',
-  styleUrls: ['./manage-product.component.scss']
+  styleUrls: ['./manage-product.component.scss'],
 })
 export class ManageProductComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   productForm!: FormGroup;
-  editing: boolean = false;
+
+  editing = false;
   selectedProductId?: number;
+
   imageFile?: File;
   imagePreview?: string;
-  loggedInSalespersonId: number = 123; // Replace with real logged in user ID
-  showAddForm: boolean = false;
-  searchTerm: string = '';
 
-  constructor(private fb: FormBuilder, private product1Service: Product1Service) {}
+  searchTerm: string = '';
+  showAddForm: boolean = false;
+
+  // Example logged-in salesperson ID (replace with real auth logic)
+  loggedInSalespersonId: number = 123;
+
+  constructor(
+    private fb: FormBuilder,
+    private product1Service: Product1Service
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -31,30 +43,45 @@ export class ManageProductComponent implements OnInit {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
-      price: [0, [Validators.required, Validators.min(0)]],
-      stock: [0, [Validators.required, Validators.min(0)]],
-      image_url: ['']
+      price: [0, Validators.required],
+      stock: [0, Validators.required],
+      image_url: [''],
     });
   }
 
   loadProducts(): void {
-    this.product1Service.getAll(this.loggedInSalespersonId).subscribe(data => {
-      this.products = data;
-      this.filteredProducts = [...this.products];
-    });
+    this.product1Service
+      .getAll(this.loggedInSalespersonId)
+      .subscribe((data: Product[]) => {
+        this.products = data;
+        this.filteredProducts = data;
+      });
   }
 
   filterProducts(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredProducts = this.products.filter(p =>
-      p.name.toLowerCase().includes(term) ||
-      (p.description && p.description.toLowerCase().includes(term))
-    );
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) {
+      this.filteredProducts = [...this.products];
+    } else {
+      this.filteredProducts = this.products.filter((p) =>
+        p.name.toLowerCase().includes(term)
+      );
+    }
+  }
+
+  openAddForm(): void {
+    this.resetForm();
+    this.showAddForm = true;
+  }
+
+  cancelForm(): void {
+    this.showAddForm = false;
+    this.resetForm();
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length) {
+    if (input.files && input.files.length > 0) {
       this.imageFile = input.files[0];
 
       const reader = new FileReader();
@@ -73,18 +100,20 @@ export class ManageProductComponent implements OnInit {
 
     const product: Product = {
       ...formValue,
-      salesperson_id: this.loggedInSalespersonId
+      salesperson_id: this.loggedInSalespersonId,
     };
 
     if (this.editing && this.selectedProductId != null) {
-      this.product1Service.update(this.selectedProductId, product).subscribe(() => {
-        this.loadProducts();
-        this.resetForm();
-      });
+      this.product1Service
+        .update(this.selectedProductId, product)
+        .subscribe(() => {
+          this.loadProducts();
+          this.cancelForm();
+        });
     } else {
       this.product1Service.create(product).subscribe(() => {
         this.loadProducts();
-        this.resetForm();
+        this.cancelForm();
       });
     }
   }
@@ -97,12 +126,19 @@ export class ManageProductComponent implements OnInit {
     this.showAddForm = true;
   }
 
+  deleteProduct(id: number): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.product1Service.delete(id).subscribe(() => {
+        this.loadProducts();
+      });
+    }
+  }
+
   resetForm(): void {
     this.editing = false;
     this.selectedProductId = undefined;
     this.productForm.reset();
     this.imagePreview = undefined;
     this.imageFile = undefined;
-    this.showAddForm = false;
   }
 }

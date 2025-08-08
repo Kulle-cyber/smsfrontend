@@ -1,32 +1,114 @@
-<div class="manage-product">
-  <h2>{{ editing ? 'Edit Product' : 'Add Product' }}</h2>
+<div class="manage-product-wrapper">
 
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <input formControlName="name" placeholder="Name" required />
-    <input formControlName="description" placeholder="Description" />
-    <input type="number" formControlName="price" placeholder="Price" required />
-    <input type="number" formControlName="stock" placeholder="Stock" required />
+  <!-- Top Bar with Search and Add -->
+  <div class="top-bar">
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchTerm"
+      (input)="filterProducts()"
+      class="search-input"
+    />
+    <button
+      class="add-product-btn"
+      (click)="showAddForm = true"
+      title="Add Product"
+    >
+      ＋
+    </button>
+  </div>
 
-    <!-- Image upload -->
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <!-- Total Products Count -->
+  <div class="product-count">
+    Total Products: {{ filteredProducts.length }}
+  </div>
 
-    <!-- Image preview -->
-    <img *ngIf="imagePreview" [src]="imagePreview" width="150" style="margin-top: 10px;" />
+  <!-- Add/Edit Product Form Modal -->
+  <div class="modal" *ngIf="showAddForm || editing">
+    <div class="modal-content">
+      <h2>{{ editing ? 'Edit Product' : 'Add Product' }}</h2>
 
-    <button type="submit">{{ editing ? 'Update' : 'Add' }} Product</button>
-    <button type="button" (click)="resetForm()" *ngIf="editing">Cancel</button>
-  </form>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <input
+          formControlName="name"
+          placeholder="Name *"
+          required
+          autocomplete="off"
+        />
+        <input
+          formControlName="description"
+          placeholder="Description"
+          autocomplete="off"
+        />
+        <input
+          type="number"
+          formControlName="price"
+          placeholder="Price *"
+          required
+          autocomplete="off"
+        />
+        <input
+          type="number"
+          formControlName="stock"
+          placeholder="Stock *"
+          required
+          autocomplete="off"
+        />
 
-  <hr />
+        <!-- File input for image -->
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+        <img
+          *ngIf="imagePreview"
+          [src]="imagePreview"
+          alt="Preview"
+          class="preview-image"
+        />
 
-  <!-- Product list -->
-  <div *ngFor="let product of products" class="product-item">
-    <h3>{{ product.name }}</h3>
-    <p>{{ product.description }}</p>
-    <p>Price: {{ product.price }} | Stock: {{ product.stock }}</p>
-    <img *ngIf="product.image_url" [src]="product.image_url" width="100" />
-    <p>Salesperson ID: {{ product.salesperson_id }}</p>
-    <button (click)="editProduct(product)">Edit</button>
-    <button (click)="deleteProduct(product.id!)">Delete</button>
+        <div class="form-buttons">
+          <button type="submit">{{ editing ? 'Update' : 'Add' }} Product</button>
+          <button
+            type="button"
+            (click)="resetForm()"
+            *ngIf="editing || showAddForm"
+            class="cancel-btn"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+      <img [src]="product.image_url" [alt]="product.name" class="product-image" />
+
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p class="description">{{ product.description }}</p>
+        <p class="price-stock">
+          Price: {{ product.price | currency }} | Stock: {{ product.stock }}
+        </p>
+        <p class="salesperson">Salesperson ID: {{ product.salesperson_id }}</p>
+      </div>
+
+      <div class="action-buttons">
+        <button
+          class="icon-btn edit-btn"
+          (click)="editProduct(product)"
+          title="Edit Product"
+        >
+          ✏️
+        </button>
+        <button
+          class="icon-btn delete-btn"
+          (click)="deleteProduct(product.id!)"
+          title="Delete Product"
+        >
+          🗑️
+        </button>
+      </div>
+    </div>
   </div>
 </div>
