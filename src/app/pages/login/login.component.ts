@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],  // Add this line!
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -18,7 +18,7 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      username: ['', Validators.required], // will hold username or email
       password: ['', Validators.required],
     });
   }
@@ -29,14 +29,16 @@ export class LoginComponent {
 
       this.authService.login(username, password).subscribe({
         next: (response) => {
-          // Redirect based on role
           const role = response.role;
+
           if (role === 'admin') {
             this.router.navigate(['/dashboard']);
           } else if (role === 'salesperson') {
             this.router.navigate(['/salesperson']);
           } else if (role === 'accountant') {
             this.router.navigate(['/accountant']);
+          } else if (role === 'customer') {
+            this.router.navigate(['/customer-dashboard']);
           } else {
             this.errorMessage = 'Unauthorized role';
           }

@@ -38,6 +38,7 @@ import { SalespersonComponent } from './components/salesperson/salesperson.compo
 import { AccountantComponent } from './components/accountant/accountant.component';
 //import { ProductsComponent } from './products/products.component';
 import { ManageProductComponent } from './components/manage-product/manage-product.component';
+import { CustomerDashboardComponent } from './customer-dashboard/customer-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { ManageProductComponent } from './components/manage-product/manage-produ
     SalespersonComponent,
     AccountantComponent,
     //ProductsComponent,
-    ManageProductComponent
+    ManageProductComponent,
+    CustomerDashboardComponent
   ],
   imports: [
     BrowserModule,

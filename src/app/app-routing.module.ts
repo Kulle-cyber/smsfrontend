@@ -1,3 +1,4 @@
+import { Customer } from './models/customer.model';
 import { Component } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -8,6 +9,7 @@ import { SalespersonComponent } from './components/salesperson/salesperson.compo
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
 //import { ProductsComponent } from './products/products.component';
 import { ManageProductComponent } from './components/manage-product/manage-product.component';
+import { CustomerDashboardComponent } from './customer-dashboard/customer-dashboard.component';
 
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
@@ -18,7 +20,7 @@ const routes: Routes = [
       { path: 'users', component: UserComponent },
       { path: 'accountant', component: AccountantComponent },
   { path: 'salesperson', component: SalespersonComponent },
-    //{ path: 'products', component: ProductsComponent },
+    { path: 'customer-dashboard', component: CustomerDashboardComponent},
       { path: '', redirectTo: '/products', pathMatch: 'full' },
  { path: 'products/manage', component: ManageProductComponent },
   //{ path: 'products/new', component: CreateProductComponent }, // if you have this
