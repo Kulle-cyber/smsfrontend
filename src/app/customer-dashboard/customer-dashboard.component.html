@@ -1,1 +1,51 @@
-<p>customer-dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      MyShop
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Search products..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      />
+      <button (click)="onSearch()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav>
+      <ul>
+        <li routerLink="/customer-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          Products
+        </li>
+        <li routerLink="/customer-dashboard/add-product" routerLinkActive="active">
+          Add Product
+        </li>
+        <li routerLink="/customer-dashboard/profile" routerLinkActive="active">
+          Profile
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="products-grid">
+      <div *ngFor="let product of filteredProducts"
+           class="product-card"
+           (click)="onProductClick(product)">
+        <img [src]="product.image_url" alt="{{ product.name }}" />
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>Price: {{ product.price | currency }}</p>
+        <p>Stock: {{ product.stock }}</p>
+      </div>
+    </div>
+  </main>
+</div>
