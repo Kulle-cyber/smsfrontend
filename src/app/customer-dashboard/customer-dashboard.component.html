@@ -1,9 +1,7 @@
 <div class="dashboard-container">
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="logo">
-      MyShop
-    </div>
+    <div class="logo">MyShop</div>
 
     <!-- Search Bar -->
     <div class="search-bar">
@@ -21,7 +19,11 @@
     <!-- Navigation Links -->
     <nav>
       <ul>
-        <li routerLink="/customer-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <li
+          routerLink="/customer-dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           Products
         </li>
         <li routerLink="/customer-dashboard/add-product" routerLinkActive="active">
@@ -36,16 +38,30 @@
 
   <!-- Main Content -->
   <main class="main-content">
+    <!-- Products Grid -->
     <div class="products-grid">
-      <div *ngFor="let product of filteredProducts"
-           class="product-card"
-           (click)="onProductClick(product)">
+      <div *ngFor="let product of filteredProducts" class="product-card">
         <img [src]="product.image_url" alt="{{ product.name }}" />
         <h3>{{ product.name }}</h3>
         <p>{{ product.description }}</p>
         <p>Price: {{ product.price | currency }}</p>
         <p>Stock: {{ product.stock }}</p>
+        <button (click)="addToCart(product)">Add to Cart</button>
       </div>
+    </div>
+
+    <!-- Cart Section -->
+    <div class="cart">
+      <h2>Your Cart</h2>
+      <ul>
+        <li *ngFor="let item of cart">
+          {{ item.name }} - {{ item.price | currency }}
+        </li>
+      </ul>
+      <p>Total: {{ totalPayment | currency }}</p>
+      <button (click)="checkout()" [disabled]="cart.length === 0">
+        Checkout
+      </button>
     </div>
   </main>
 </div>
