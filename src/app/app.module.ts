@@ -1,11 +1,10 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,10 +19,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select'; // Add this
-import { MatTableModule } from '@angular/material/table'; // Add this
-import { MatPaginatorModule } from '@angular/material/paginator'; // Recommended
-import { MatSortModule } from '@angular/material/sort'; // Recommended
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 // Components
 import { LoginComponent } from './pages/login/login.component';
@@ -36,7 +35,6 @@ import { UserComponent } from './user/user.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
 import { SalespersonComponent } from './components/salesperson/salesperson.component';
 import { AccountantComponent } from './components/accountant/accountant.component';
-//import { ProductsComponent } from './products/products.component';
 import { ManageProductComponent } from './components/manage-product/manage-product.component';
 import { CustomerDashboardComponent } from './customer-dashboard/customer-dashboard.component';
 
@@ -53,7 +51,6 @@ import { CustomerDashboardComponent } from './customer-dashboard/customer-dashbo
     CustomerManagementComponent,
     SalespersonComponent,
     AccountantComponent,
-    //ProductsComponent,
     ManageProductComponent,
     CustomerDashboardComponent
   ],
@@ -76,12 +73,18 @@ import { CustomerDashboardComponent } from './customer-dashboard/customer-dashbo
     MatListModule,
     MatToolbarModule,
     MatMenuModule,
-    MatSelectModule, // Added
-    MatTableModule, // Added
-    MatPaginatorModule, // Added
-    MatSortModule // Added
+    MatSelectModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

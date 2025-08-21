@@ -1,67 +1,56 @@
 <div class="dashboard-container">
-  <!-- Sidebar -->
-  <aside class="sidebar">
+  <!-- Header -->
+  <header class="header">
     <div class="logo">MyShop</div>
 
-    <!-- Search Bar -->
     <div class="search-bar">
-      <input
-        type="text"
-        placeholder="Search products..."
-        [(ngModel)]="searchTerm"
-        (keyup.enter)="onSearch()"
-      />
-      <button (click)="onSearch()">
-        <i class="fas fa-search"></i>
-      </button>
+      <input type="text" placeholder="Search products..." [(ngModel)]="searchTerm" (keyup.enter)="onSearch()"/>
+      <button (click)="onSearch()">🔍</button>
     </div>
 
-    <!-- Navigation Links -->
-    <nav>
-      <ul>
-        <li
-          routerLink="/customer-dashboard"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          Products
-        </li>
-        <li routerLink="/customer-dashboard/add-product" routerLinkActive="active">
-          Add Product
-        </li>
-        <li routerLink="/customer-dashboard/profile" routerLinkActive="active">
-          Profile
-        </li>
-      </ul>
-    </nav>
-  </aside>
+    <div class="header-right">
+      <div class="profile">👤 Profile</div>
+      <div class="cart" (click)="toggleCart()">
+        🛒 Cart <span class="cart-count">{{ cart.length }}</span>
+      </div>
+    </div>
+  </header>
 
-  <!-- Main Content -->
   <main class="main-content">
     <!-- Products Grid -->
     <div class="products-grid">
       <div *ngFor="let product of filteredProducts" class="product-card">
         <img [src]="product.image_url" alt="{{ product.name }}" />
         <h3>{{ product.name }}</h3>
-        <p>{{ product.description }}</p>
-        <p>Price: {{ product.price | currency }}</p>
-        <p>Stock: {{ product.stock }}</p>
+        <p class="desc">{{ product.description }}</p>
+        <p class="price">Price: {{ product.price | currency }}</p>
+        <p class="stock">Stock: {{ product.stock }}</p>
         <button (click)="addToCart(product)">Add to Cart</button>
       </div>
     </div>
 
-    <!-- Cart Section -->
-    <div class="cart">
+    <!-- Cart Panel -->
+    <div class="cart-panel" *ngIf="cartVisible">
       <h2>Your Cart</h2>
       <ul>
         <li *ngFor="let item of cart">
-          {{ item.name }} - {{ item.price | currency }}
+          <img [src]="item.image_url" alt="{{ item.name }}" />
+          <div class="item-details">
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.price | currency }}</p>
+            <div class="quantity-controls">
+              <button (click)="decreaseQuantity(item)">-</button>
+              <span>{{ item.quantity }}</span>
+              <button (click)="increaseQuantity(item)">+</button>
+            </div>
+          </div>
+          <button class="remove" (click)="removeFromCart(item)">✖</button>
         </li>
       </ul>
-      <p>Total: {{ totalPayment | currency }}</p>
-      <button (click)="checkout()" [disabled]="cart.length === 0">
-        Checkout
-      </button>
+      <div class="checkout-section">
+        <p class="total">Total: {{ totalPayment | currency }}</p>
+        <button (click)="checkout()" [disabled]="cart.length === 0">Proceed to Checkout</button>
+      </div>
     </div>
   </main>
 </div>

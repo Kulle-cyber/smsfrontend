@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
-interface LoginResponse {
+export interface LoginResponse {
   token: string;
   role: string;
   username?: string;
+  customerId?: number; // must come from backend
 }
 
 @Injectable({
@@ -24,6 +25,12 @@ export class AuthService {
         localStorage.setItem('token', response.token);
         localStorage.setItem('role', response.role);
         localStorage.setItem('username', response.username ?? '');
+
+        // ✅ store customerId if backend sends it
+        if (response.customerId !== undefined) {
+          localStorage.setItem('customerId', response.customerId.toString());
+        }
+
         this.loggedIn.next(true);
         this.userRole.next(response.role);
       })
@@ -34,6 +41,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('username');
+    localStorage.removeItem('customerId');
     this.loggedIn.next(false);
     this.userRole.next(null);
   }
@@ -48,6 +56,11 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getCustomerId(): number | null {
+    const id = localStorage.getItem('customerId');
+    return id ? +id : null;
   }
 
   private hasToken(): boolean {

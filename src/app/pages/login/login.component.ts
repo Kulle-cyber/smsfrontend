@@ -18,7 +18,7 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required], // will hold username or email
+      username: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
@@ -30,7 +30,6 @@ export class LoginComponent {
       this.authService.login(username, password).subscribe({
         next: (response) => {
           const role = response.role;
-
           if (role === 'admin') {
             this.router.navigate(['/dashboard']);
           } else if (role === 'salesperson') {

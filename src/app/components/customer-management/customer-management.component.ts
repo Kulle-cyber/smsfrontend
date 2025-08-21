@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer.model';
@@ -17,7 +17,11 @@ export class CustomerManagementComponent implements OnInit {
   searchTerm = '';
   showForm = false;
 
-  constructor(private fb: FormBuilder, private customerService: CustomerService) {
+  constructor(
+    private fb: FormBuilder,
+    private customerService: CustomerService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.customerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.email]],
@@ -25,6 +29,12 @@ export class CustomerManagementComponent implements OnInit {
       address: [''],
       portalAccess: [false],
       password: ['']
+    });
+
+    // Fix ExpressionChangedAfterItHasBeenCheckedError for portalAccess
+    this.customerForm.get('portalAccess')?.valueChanges.subscribe(() => {
+      // defer change detection safely
+      Promise.resolve().then(() => this.cdr.detectChanges());
     });
   }
 
@@ -62,6 +72,10 @@ export class CustomerManagementComponent implements OnInit {
 
   toggleForm() {
     this.showForm = !this.showForm;
+
+    // defer change detection to prevent NG0100 error
+    Promise.resolve().then(() => this.cdr.detectChanges());
+
     if (!this.showForm) {
       this.cancelEdit();
     }
@@ -79,15 +93,19 @@ export class CustomerManagementComponent implements OnInit {
       portalAccess: customer.portalAccess,
       password: ''
     });
+
+    // defer change detection after patching form
+    Promise.resolve().then(() => this.cdr.detectChanges());
   }
 
   cancelEdit() {
     this.editMode = false;
     this.showForm = false;
     this.editingCustomer = null;
-    this.customerForm.reset({
-      portalAccess: false
-    });
+    this.customerForm.reset({ portalAccess: false });
+
+    // defer change detection after reset
+    Promise.resolve().then(() => this.cdr.detectChanges());
   }
 
   onSubmit() {
@@ -98,6 +116,7 @@ export class CustomerManagementComponent implements OnInit {
 
     const formData = this.customerForm.value;
 
+    // Password required for portal access when creating new customer
     if (formData.portalAccess && !this.editMode && !formData.password) {
       alert('Password is required for portal access');
       return;
@@ -114,51 +133,38 @@ export class CustomerManagementComponent implements OnInit {
         id: this.editingCustomer.id
       }).subscribe({
         next: (updatedCustomer) => {
-          // Update local state
           const index = this.customers.findIndex(c => c.id === updatedCustomer.id);
-          if (index !== -1) {
-            this.customers[index] = updatedCustomer;
-          }
+          if (index !== -1) this.customers[index] = updatedCustomer;
+
           this.filteredCustomers = [...this.customers];
           this.cancelEdit();
         },
-        error: (err) => {
-          console.error('Error updating customer:', err);
-        }
+        error: (err) => console.error('Error updating customer:', err)
       });
     } else {
-      // For new customer
       this.customerService.registerCustomer(formData).subscribe({
         next: () => {
           this.loadCustomers();
           this.cancelEdit();
         },
-        error: (err) => {
-          console.error('Error creating customer:', err);
-        }
+        error: (err) => console.error('Error creating customer:', err)
       });
     }
   }
 
   onDelete(id: number) {
-    if (confirm('Are you sure you want to delete this customer?')) {
-      this.customerService.deleteCustomer(id).subscribe({
-        next: () => {
-          this.loadCustomers();
-        },
-        error: (err) => {
-          console.error('Error deleting customer:', err);
-        }
-      });
-    }
+    if (!confirm('Are you sure you want to delete this customer?')) return;
+
+    this.customerService.deleteCustomer(id).subscribe({
+      next: () => this.loadCustomers(),
+      error: (err) => console.error('Error deleting customer:', err)
+    });
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
+      if (control instanceof FormGroup) this.markFormGroupTouched(control);
     });
   }
 }
